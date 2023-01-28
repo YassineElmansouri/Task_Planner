@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import "./App.css"
 
 
 export default function Todo(){
     const [tasks, setTask] = useState([])
     const [todo, setTodo] = useState('')
-    const [date, setDate] = useState(new Date());
+    const [date, setDate] = useState();
     const [completed, setCompletedTasks] = useState(0)
 
     //this method will check if there is a local storage with the name tasks and take the elements and add them to the task variable
@@ -57,40 +58,74 @@ export default function Todo(){
     }
 
     return (
-        <div className="jumbotron-center">
-          <div className="page-header text-center">
-            <h1 class="text-primary">To-Do List</h1>
-            <h3 class="text-success">Task completed : {completed}</h3>
+      <div>
+        <div className="jumbotron jumbotron-fluid bg-info text-white">
+          <div className="container">
+            <h1 className="display-4 text-center">To-Do List</h1>
+            <p className="lead text-center">Keep track of all your tasks and deadlines</p>
           </div>
-            
-            <form className="form-inline" onSubmit={hundleSub}>
-                <label className="sr-only" for="inlineFormInput">enter you task : </label>
-                <input className="form-control mb-2 mr-sm-2" type="text" value={todo} onChange={(e)=>{setTodo(e.target.value)}}/>
-                <input class="btn btn-outline-primary btn-rounded" type="submit" value="Add"/>
-            </form>
-            <table class="table text-center table-hover">
-              <thead class="thead-dark">
-                <tr>
-                  <th>Task Name</th>
-                  <th>Task Date</th>
-                  <th>Remove Task</th>
-                  <th>Edit Task</th>
-                  <th>Task Completed</th>
-                </tr>
-              </thead>
-              <tbody>
-                {tasks.map((task,index)=>(
-                  <tr key={index}>
-                    <td>{task.task}</td>
-                    <td>{task.date}</td>
-                    <td><center><button class="btn btn-outline-danger" onClick={()=>handleRemove(index)}>Remove</button></center></td>
-                    <td><center><button class="btn btn-outline-info " onClick={()=>handleEdit(index)}>Edit</button></center></td>
-                    <td><center><input class="form-check-input"  type="checkbox" checked={task.completed} onChange={() => handleCheck(index)}
-              /></center></td>
-                  </tr>
-                  ))}
-              </tbody>
-            </table>
         </div>
+
+        <div className="container my-5">
+          <h4 className="display-6 text-center">Tasks Completed : {completed}</h4>
+          <div className="row">
+            <div className="col-md-8 mx-auto">
+              <form onSubmit={hundleSub}>
+                <div className="form-group">
+                  <label for="taskInput">Enter your task:</label>
+                  <input type="text" className="form-control" id="taskInput" value={todo} onChange={(e)=>{setTodo(e.target.value)}}/>
+                </div>
+                <div className="form-group">
+                  <label for="dateInput">Enter due date:</label>
+                  <input type="date" className="form-control mb-3" id="dateInput" onChange={(e)=>{setDate(e.target.value)}}/>
+                </div>
+                <div className="form-group text-center">
+                  <input className="btn btn-success" type="submit" value="Add Task"/>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-md-8 mx-auto">
+              <table className="table table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th>Task Name</th>
+                    <th>Task DeadLine</th>
+                    <th>Remove</th>
+                    <th>Edit</th>
+                    <th>Completed</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {tasks.map((task,index)=>(
+                    <tr key={index}>
+                      <td>{task.task}</td>
+                      <td>{task.date}</td>
+                      <td >
+                        <button className="btn btn-danger" onClick={()=>handleRemove(index)}>
+                          <i className="fas fa-trash-alt"></i>
+                        </button>
+                      </td>
+                      <td >
+                        <button className="btn btn-warning" onClick={()=>handleEdit(index)}>
+                          <i className="fas fa-edit"></i>
+                        </button>
+                      </td>
+                      <td className="text-center">
+                        <input className="form-check-input" type="checkbox" checked={task.completed} onChange={() => handleCheck(index)}
+                      />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+</div>
+    
     )
 }
